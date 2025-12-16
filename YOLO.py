@@ -1,10 +1,11 @@
 from ultralytics import YOLO
 import cv2
+import time
+import copy
 
 modelDir = "YOLOmodels"
 
 model = YOLO(f"{modelDir}/yolov8n-face-lindevs.pt") # våran egna tränade modell
-
 
 cap = cv2.VideoCapture(0)
 # frame = getFrame() isch
@@ -13,6 +14,10 @@ cap = cv2.VideoCapture(0)
 # height, width, channels = frame.shape
 
 # print(f"{height}, {width}")
+
+current_time = time.time()
+last_time = 0
+delta_time = 0
 
 while True:
     ret, frame = cap.read()
@@ -45,16 +50,28 @@ while True:
         label = f"{name} {conf:.2f}"
         cv2.putText(frame, label, (int(x1), int(y1)-10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-        coords = f"x: {ncx}, y: {ncy}"
+        coords = f"x: {ncx:.3f}, y: {ncy:.3f}"
         cv2.putText(frame, coords, (int(x1), int(y1) - 30),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         
         # Optional: draw center point
         cv2.circle(frame, (cx, cy), 3, (0, 0, 255), -1)
-
-    cv2.imshow("YOLO", frame)
     
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    # fps
+    last_time = copy.deepcopy(current_time)
+    current_time = time.time()
+    delta_time = current_time - last_time
+    
+    fps = int(1 / delta_time)
+    
+    cv2.putText(frame, f"{fps}", (8, 16),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+    
+    
+    cv2.imshow("Frame", frame)
+    
+    if (cv2.waitKey(1) & 0xFF == ord('q') or 
+        cv2.getWindowProperty("Frame", cv2.WND_PROP_VISIBLE) < 1):
         break
 
 cap.release()
