@@ -1,7 +1,10 @@
 from ultralytics import YOLO
 import cv2
 
-model = YOLO("yolov8n-face-lindevs.pt") # våran egna tränade modell
+modelDir = "YOLOmodels"
+
+model = YOLO(f"{modelDir}/yolov8n-face-lindevs.pt") # våran egna tränade modell
+
 
 cap = cv2.VideoCapture(0)
 # frame = getFrame() isch
