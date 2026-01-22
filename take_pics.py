@@ -16,7 +16,7 @@ while True:
     if not ret:
         break
     
-    cv2.flip(frame, 0)
+    cv2.flip(frame,     0)
     
     if (showImg):
         cv2.imshow("Frame", frame)

@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 2
+names: ['alive', 'dead']
+
+roboflow:
+  workspace: gluutons-cove
+  project: yolo_thing_for_robocup_tullangen
+  version: 2
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/gluutons-cove/yolo_thing_for_robocup_tullangen/dataset/2
