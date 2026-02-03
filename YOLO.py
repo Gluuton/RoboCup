@@ -4,10 +4,12 @@ import time
 import copy
 
 modelDir = "YOLOmodels"
+CONFIDENCE_THRESH = 0.6
 
-model = YOLO(f"{modelDir}/yolov8n-face-lindevs.pt") # våran egna tränade modell
+model = YOLO(f"{modelDir}/yolov8n-balls-1-0.pt") # våran egna tränade modell
 
 cap = cv2.VideoCapture(0)
+
 # frame = getFrame() isch
 
 # frame = cv2.imread("test.jpg")
@@ -43,8 +45,18 @@ while True:
         name = results.names[cls]
         conf = float(box.conf[0])
         
+        color = (0, 0, 0)
+        
+        if (cls == 0):
+            color = (255, 255, 0)
+        elif (cls == 1):
+            color = (255, 0, 0)
+        
+        if (conf < CONFIDENCE_THRESH):
+            continue
+        
         # Draw bounding box
-        cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 1)
+        cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), color, 1)
 
         # Draw label and confidence
         label = f"{name} {conf:.2f}"
