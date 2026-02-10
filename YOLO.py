@@ -6,16 +6,9 @@ import copy
 modelDir = "YOLOmodels"
 CONFIDENCE_THRESH = 0.6
 
-model = YOLO(f"{modelDir}/yolov8n-balls-1-0.pt") # våran egna tränade modell
+model = YOLO(f"{modelDir}/yolov8n-balls-1-5_ncnn_model") # våran egna tränade modell
 
-cap = cv2.VideoCapture(0)
-
-# frame = getFrame() isch
-
-# frame = cv2.imread("test.jpg")
-# height, width, channels = frame.shape
-
-# print(f"{height}, {width}")
+cap = cv2.VideoCapture(0,)
 
 current_time = time.time()
 last_time = 0
@@ -28,7 +21,10 @@ while True:
     
     cv2.flip(frame, 0)
     
+    # frame = cv2.resize(frame, (320, 320))
+    
     height, width, channels = frame.shape
+    print(height, width)
 
     results = model(frame, verbose=False)[0]
     
